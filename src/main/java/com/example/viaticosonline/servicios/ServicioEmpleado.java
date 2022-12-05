@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServicioEmpleado implements ServicioBase {
+public class ServicioEmpleado implements ServicioBase<Empleado> {
 
     @Autowired
     RepositorioEmpleado repositorioEmpleado;
 
-
     @Override
-    public List buscarTodos() throws Exception {
+    public List<Empleado> buscarTodos() throws Exception {
         try {
             List<Empleado> empleados = repositorioEmpleado.findAll();
             return empleados;
@@ -38,12 +37,20 @@ public class ServicioEmpleado implements ServicioBase {
     }
 
     @Override
-    public Object registrar(Object entidad) throws Exception {
+    public Empleado registrar(Empleado entidad) throws Exception {
         return null;
     }
 
     @Override
-    public Object editar(Integer id, Object entidad) throws Exception {
-        return null;
+    public Empleado editar(Integer id, Empleado entidad) throws Exception {
+        try{
+            Optional<Empleado> empleadoBuscado = repositorioEmpleado.findById(id);
+            Empleado empleado = empleadoBuscado.get();
+            empleado = repositorioEmpleado.save(entidad);
+            return empleado;
+
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 }
