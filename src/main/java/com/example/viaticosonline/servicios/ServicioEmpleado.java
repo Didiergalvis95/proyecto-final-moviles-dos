@@ -38,7 +38,12 @@ public class ServicioEmpleado implements ServicioBase<Empleado> {
 
     @Override
     public Empleado registrar(Empleado entidad) throws Exception {
-        return null;
+        try {
+            entidad = repositorioEmpleado.save(entidad);
+            return entidad;
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
     }
 
     @Override
@@ -48,7 +53,6 @@ public class ServicioEmpleado implements ServicioBase<Empleado> {
             Empleado empleado = empleadoBuscado.get();
             empleado = repositorioEmpleado.save(entidad);
             return empleado;
-
         }catch (Exception error){
             throw new Exception(error.getMessage());
         }
